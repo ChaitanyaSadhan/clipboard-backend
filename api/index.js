@@ -51,5 +51,8 @@ app.get('/clip', (req, res)=>{
             console.log(err);
         })
 });
+app.post('/test-post', (req, res) =>{
+    res.send(req);
+});
 
 module.exports = app;
