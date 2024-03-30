@@ -52,7 +52,8 @@ app.get('/clip', (req, res)=>{
         })
 });
 app.post('/test-post', (req, res) =>{
-    res.send(req);
+    console.log(req);
+    res.send('a;df');
 });
 
 module.exports = app;
