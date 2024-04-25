@@ -3,6 +3,7 @@
 
 const express = require('express');
 const request = require('request');
+var bodyParser = require('body-parser');
 
 
 
@@ -14,6 +15,9 @@ const app = express();
 app.listen(3000, ()=>{
     console.log('server started...');
 })
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/push/:msg',  async(req, res)=>{
     message = req.params.msg;
@@ -60,6 +64,11 @@ app.get('/pull', async(req,res)=>{
         </body>
     </html>
     `);
+});
+
+app.post('/test',(req, res)=>{
+    console.log(req.body);
+    res.send("hellllll");
 });
 
 
