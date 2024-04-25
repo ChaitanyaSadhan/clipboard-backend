@@ -13,25 +13,54 @@ const app = express();
 
 app.listen(3000, ()=>{
     console.log('server started...');
-});
+})
 
-app.get('/send/:msg',  (req, res)=>{
+app.get('/push/:msg',  async(req, res)=>{
     message = req.params.msg;
-    let msgresponse = 0;
     uri = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${chat_id}&text=${message}`;
     
+    const response = await fetch(uri);
+    const jsonResponse = await response.json();
     
-    request(uri, async(err, res, body) =>{
-        if(!err && res.statusCode == 200){
-            console.log('success');
-        }else{
-            console.log('fail');
-        }
-    }).then(res.send(`clipboard: ${message}   is saved.`));
-    // res.send(`clipboard: ${message}   is saved.`);
+    
+        
+    res.send(`
+    <html>
+        <head>
+            <title>HTML Elements Reference</title>
+        </head>
 
+        <body>
+
+        <h1>clipboard: ${jsonResponse.result.text}</h1>
+        <h3>--- Thanks Chai :)</h3>
+        </body>
+    </html>
+    `);
+    // console.log(`clipboard: ${jsonResponse.result.text} \n ------- thanks chai:)`);
 
 })
+
+app.get('/pull', async(req,res)=>{
+    uri = `https://api.telegram.org/bot${TOKEN}/getUpdates`;
+    const response = await fetch(uri);
+    const jsonResponse = await response.json();
+    // console.log(jsonResponse.result[5].message.text);
+    result = jsonResponse.result;
+    res.send(`
+    <html>
+        <head>
+            <title>Clipboard-Pull</title>
+        </head>
+
+        <body>
+
+        <h1>clipboard:   ${result[result.length -1].message.text}</h1>
+        <h3>--- Thanks Chai :)</h3>
+        </body>
+    </html>
+    `);
+});
 
 
 module.exports = app;
