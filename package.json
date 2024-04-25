@@ -11,6 +11,8 @@
   "dependencies": {
     "express": "^4.19.2",
     "lodash": "^4.17.21",
-    "mongoose": "^8.2.4"
+    "mongoose": "^8.2.4",
+    "request": "^2.88.2"
+    
   }
 }

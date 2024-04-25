@@ -1,59 +1,37 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const Clip = require('./models/clip.js');
 
-//express app
+
+
+const express = require('express');
+const request = require('request');
+
+
+
+const TOKEN = '6905097620:AAFB7v5jJ1Aa4Sv-5rPdFgPc-LhHIwBTgOg';
+const chat_id = '2143276019';
+
 const app = express();
 
-//connect to mongoDB
-const dbURI = 'mongodb+srv://igniteduser:igniteduser@clipboard-cluster.n63syjd.mongodb.net/clipboard-db?retryWrites=true&w=majority&appName=clipboard-cluster';
-mongoose.connect(dbURI)
-    .then((result) => {
-        console.log('connection established.');
-        //listening for requests.
-        app.listen(3000);
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
+app.listen(3000, ()=>{
+    console.log('server started...');
+});
 
-
-//mongoose routes.
-app.get('/add', (req, res)=>{
-    const clip = new Clip({
-        data: 'chaitanya sadhan   3',
-        tag: 'thanks chaitu:)'
-
+app.get('/send/:msg',  (req, res)=>{
+    message = req.params.msg;
+    let msgresponse = 0;
+    uri = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${chat_id}&text=${message}`;
+    
+    
+    request(uri, async(err, res, body) =>{
+        if(!err && res.statusCode == 200){
+            console.log('success');
+        }else{
+            console.log('fail');
+        }
     });
-    clip.save()
-        .then((result)=>{
-            res.send(result);
-        })
-        .catch((err)=> console.log(err))
-});
+    res.send(`clipboard: ${message}   is saved.`);
 
-app.get('/all', (req, res)=>{
-    Clip.find()
-        .then((result)=>{
-            res.send(result);
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-});
 
-app.get('/clip', (req, res)=>{
-    Clip.findById('6608001f26d4fcba815ea7a3')
-        .then((result)=>{
-            res.send(result);
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-});
-app.post('/test-post', (req, res) =>{
-    console.log(req);
-    res.send('a;df');
-});
+})
+
 
 module.exports = app;
