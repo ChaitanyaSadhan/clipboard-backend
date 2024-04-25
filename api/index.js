@@ -28,7 +28,7 @@ app.get('/send/:msg',  (req, res)=>{
             console.log('fail');
         }
     });
-    res.send(`clipboard: ${message}   is saved.`);
+    // res.send(`clipboard: ${message}   is saved.`);
 
 
 })
